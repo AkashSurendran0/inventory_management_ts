@@ -97,4 +97,9 @@ export class InventoryRepository implements IInventoryRepository {
         return {success:true, product}
     }
 
+    async deleteProduct(id: string): Promise<{ success: boolean; }> {
+        await InventoryModel.findByIdAndDelete(id)
+        return {success:true}
+    }
+
 }

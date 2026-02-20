@@ -10,6 +10,7 @@ import { GetAllProducts } from "./services/inventory/getAllProducts";
 import { InventoryRepository } from "./repository/inventory.repository";
 import { AddProduct } from "./services/inventory/addProduct";
 import { EditProduct } from "./services/inventory/editProduct";
+import { DeleteProduct } from "./services/inventory/deleteProduct";
 
 const container=new Container()
 
@@ -20,6 +21,7 @@ container.bind(TYPES.IVerifyLogin).to(VerifyLogin).inSingletonScope()
 container.bind(TYPES.IGetAllProducts).to(GetAllProducts).inSingletonScope()
 container.bind(TYPES.IAddProduct).to(AddProduct).inSingletonScope()
 container.bind(TYPES.IEditProduct).to(EditProduct).inSingletonScope()
+container.bind(TYPES.IDeleteProduct).to(DeleteProduct).inSingletonScope()
 
 container.bind(TYPES.AuthController).to(AuthController).inSingletonScope()
 container.bind(TYPES.InventoryController).to(InventoryController).inSingletonScope()

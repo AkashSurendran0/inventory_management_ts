@@ -8,5 +8,6 @@ export const TYPES = {
     IGetAllProducts:'IGetAllProducts',
     IInventoryRepository:'IInventoryRepository',
     IAddProduct:'IAddProduct',
-    IEditProduct:'IEditProduct'
+    IEditProduct:'IEditProduct',
+    IDeleteProduct:'IDeleteProduct'
 }

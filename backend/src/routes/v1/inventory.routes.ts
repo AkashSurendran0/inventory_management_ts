@@ -9,6 +9,6 @@ const inventoryController=container.get<InventoryController>(TYPES.InventoryCont
 router.get('/products', inventoryController.getProducts)
 router.post('/products', inventoryController.addProducts)
 router.patch('/products/:id', inventoryController.editProduct)
-// router.delete('/products/:id', deleteProduct)
+router.delete('/products/:id', inventoryController.deleteProduct)
 
 export default router

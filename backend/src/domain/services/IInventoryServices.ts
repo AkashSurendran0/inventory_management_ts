@@ -18,3 +18,7 @@ export interface IAddProduct {
 export interface IEditProduct {
     editProduct(data: Data, id:string): Promise<Inventory>
 }
+
+export interface IDeleteProduct {
+    deleteProduct(id:string): Promise<{success:boolean}>
+}

@@ -12,4 +12,5 @@ export interface IInventoryRepository {
     findAllProducts(): Promise<Inventory[]>
     addProduct(data: Data): Promise<{success:boolean, product?:Inventory}>
     editProduct(data: Data, id:string): Promise<{success:boolean, product?:Inventory}>
+    deleteProduct(id:string): Promise<{success:boolean}>
 }
