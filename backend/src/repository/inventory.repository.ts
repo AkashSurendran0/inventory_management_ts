@@ -43,4 +43,58 @@ export class InventoryRepository implements IInventoryRepository {
         )
     }
 
+    async addProduct(data: { name: string; description: string; quantity: number; price: number; }): Promise<{ success: boolean; product?: Inventory; }> {
+        let existingProduct=await InventoryModel.findOne({normalizedName:data.name.toLowerCase()})
+        if(existingProduct) return {success:false}
+        const newProduct = await InventoryModel.insertOne({
+            name:data.name,
+            normalizedName:data.name.toLowerCase(),
+            description:data.description,
+            quantity:data.quantity,
+            price:data.price
+        })
+        const product = new Inventory (
+            String(newProduct._id),
+            newProduct.name,
+            newProduct.normalizedName,
+            newProduct.description,
+            newProduct.quantity,
+            newProduct.price,
+            newProduct.createdAt
+        )
+        return {success:true, product}
+    }
+
+    async editProduct(data: { name: string; description: string; quantity: number; price: number; }, id: string): Promise<{ success: boolean; product?: Inventory; }> {
+        let existingProduct=await InventoryModel.findOne({
+            normalizedName:data.name.toLowerCase(),
+            _id: { $ne: id }
+        })
+        if(existingProduct) return {success:false}
+        const newProduct = await InventoryModel.findByIdAndUpdate(
+            id,
+            {
+                $set:{
+                    name:data.name,
+                    normalizedName:data.name.toLowerCase(),
+                    description:data.description,
+                    quantity:data.quantity,
+                    price:data.price
+                }
+            },
+            { new: true }
+        )
+        const product=new Inventory (
+            String(newProduct!._id),
+            newProduct!.name,
+            newProduct!.normalizedName,
+            newProduct!.description,
+            newProduct!.quantity,
+            newProduct!.price,
+            newProduct!.createdAt
+        )
+
+        return {success:true, product}
+    }
+
 }

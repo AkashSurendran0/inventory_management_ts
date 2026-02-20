@@ -6,5 +6,7 @@ export const TYPES = {
     JwtHandler:'JwtHandler',
     InventoryController:'InventoryController',
     IGetAllProducts:'IGetAllProducts',
-    IInventoryRepository:'IInventoryRepository'
+    IInventoryRepository:'IInventoryRepository',
+    IAddProduct:'IAddProduct',
+    IEditProduct:'IEditProduct'
 }
