@@ -1,6 +1,10 @@
 export const TYPES = {
     AuthController:'AuthController',
     IVerifyLogin:'IVerifyLogin',
-    IUserRepository:'IUserRepository',
-    TokenHandler:'TokenHandler'
+    IAuthRepository:'IAuthRepository',
+    TokenHandler:'TokenHandler',
+    JwtHandler:'JwtHandler',
+    InventoryController:'InventoryController',
+    IGetAllProducts:'IGetAllProducts',
+    IInventoryRepository:'IInventoryRepository'
 }

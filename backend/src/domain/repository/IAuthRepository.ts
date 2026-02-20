@@ -1,5 +1,5 @@
 import { User } from "../entity/User";
 
-export interface IUserRepository {
+export interface IAuthRepository {
     findByEmail(email:string):Promise<User | null>
 }
