@@ -23,6 +23,6 @@ export const editItem = async (data:Data, id:string): Promise<{result: Data}> =>
     return await api.patch(`${backendRoute}/v1/inventory/products/${id}`, data)
 }
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: string): Promise<{result : {success:boolean}}> => {
     return await api.delete(`${backendRoute}/v1/inventory/products/${id}`)
 }

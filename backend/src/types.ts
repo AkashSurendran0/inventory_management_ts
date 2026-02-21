@@ -9,5 +9,11 @@ export const TYPES = {
     IInventoryRepository:'IInventoryRepository',
     IAddProduct:'IAddProduct',
     IEditProduct:'IEditProduct',
-    IDeleteProduct:'IDeleteProduct'
+    IDeleteProduct:'IDeleteProduct',
+    CustomerController:'CustomerController',
+    IAddCustomer:'IAddCustomer',
+    ICustomerRepository:'ICustomerRepository',
+    IGetAllCustomer:'IGetAllCustomer',
+    IEditCustomer:'IEditCustomer',
+    IDeleteCustomer:'IDeleteCustomer'
 }
