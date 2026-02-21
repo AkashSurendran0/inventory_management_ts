@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { IVerifyLogin } from "../../domain/services/IAuthServices";
 import { TYPES } from "../../types";
-import { IUserRepository } from "../../domain/repository/IAuthRepository";
+import { IAuthRepository } from "../../domain/repository/IAuthRepository";
 import { STATUS_CODES } from "../../utils/statusCode.util";
 import { CreateError } from "../../utils/errorHandler.util";
 import { TokenHandler } from "../../utils/token.util";
@@ -10,12 +10,12 @@ import { TokenHandler } from "../../utils/token.util";
 export class VerifyLogin implements IVerifyLogin {
 
     constructor(
-        @inject(TYPES.IUserRepository) private _userRepository:IUserRepository,
+        @inject(TYPES.IAuthRepository) private _authRepository:IAuthRepository,
         @inject(TYPES.TokenHandler) private _tokenHandler:TokenHandler
     ) {}
 
     async verifyLogin(email: string, password: string): Promise<{ accessToken: string; refreshToken: string; }> {
-        const user=await this._userRepository.findByEmail(email)
+        const user=await this._authRepository.findByEmail(email)
         if(!user){
             throw new CreateError(STATUS_CODES.UNAUTHORIZED, 'User doesnt exist')
         }

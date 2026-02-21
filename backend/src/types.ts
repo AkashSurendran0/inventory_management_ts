@@ -1,6 +1,19 @@
 export const TYPES = {
     AuthController:'AuthController',
     IVerifyLogin:'IVerifyLogin',
-    IUserRepository:'IUserRepository',
-    TokenHandler:'TokenHandler'
+    IAuthRepository:'IAuthRepository',
+    TokenHandler:'TokenHandler',
+    JwtHandler:'JwtHandler',
+    InventoryController:'InventoryController',
+    IGetAllProducts:'IGetAllProducts',
+    IInventoryRepository:'IInventoryRepository',
+    IAddProduct:'IAddProduct',
+    IEditProduct:'IEditProduct',
+    IDeleteProduct:'IDeleteProduct',
+    CustomerController:'CustomerController',
+    IAddCustomer:'IAddCustomer',
+    ICustomerRepository:'ICustomerRepository',
+    IGetAllCustomer:'IGetAllCustomer',
+    IEditCustomer:'IEditCustomer',
+    IDeleteCustomer:'IDeleteCustomer'
 }
