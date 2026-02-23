@@ -10,6 +10,7 @@ type FormData = {
     description:string,
     quantity:number,
     price:number
+    isActive?:boolean
 }
 
 type Data = {

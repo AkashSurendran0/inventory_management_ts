@@ -1,4 +1,4 @@
-import { Edit2, Trash2 } from 'lucide-react'
+import { AlertTriangle, Edit2 } from 'lucide-react'
 
 type Item = {
     _id?:string | undefined,
@@ -6,6 +6,7 @@ type Item = {
     description:string,
     quantity:number,
     price:number
+    isActive?:boolean
 }
 
 type Props = {
@@ -36,6 +37,9 @@ function InventoryTable({items, handleDeleteClick, openEditModal}: Props) {
                     Price
                 </th>
                 <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                    Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
                     Actions
                 </th>
                 </tr>
@@ -58,7 +62,16 @@ function InventoryTable({items, handleDeleteClick, openEditModal}: Props) {
                     <td className="px-6 py-4 text-white font-medium">
                     ${item.price}
                     </td>
-                    <td className="px-6 py-4">
+                    {item.isActive ? (
+                        <td className="px-6 py-4 text-green-600 font-medium">
+                        Active
+                        </td>
+                    ) : (
+                        <td className="px-6 py-4 text-red-500 font-medium">
+                        Inactive
+                        </td>
+                    )}
+                    <td className="py-4">
                     <div className="flex gap-2">
                         <button 
                         className="flex items-center gap-1 px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition-colors text-sm font-medium"
@@ -71,8 +84,8 @@ function InventoryTable({items, handleDeleteClick, openEditModal}: Props) {
                         onClick={() => handleDeleteClick(item)}
                         className="flex items-center gap-1 px-3 py-1 bg-red-600/20 text-red-400 rounded hover:bg-red-600/30 transition-colors text-sm font-medium"
                         >
-                        <Trash2 size={16} />
-                        Delete
+                        <AlertTriangle size={16} />
+                        Change Status
                         </button>
                     </div>
                     </td>

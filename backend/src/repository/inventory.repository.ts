@@ -17,6 +17,7 @@ export class InventoryRepository implements IInventoryRepository {
                 product.description,
                 product.quantity,
                 product.price,
+                product.isActive,
                 product.createdAt
             )
         )
@@ -38,6 +39,7 @@ export class InventoryRepository implements IInventoryRepository {
                 product.description,
                 product.quantity,
                 product.price,
+                product.isActive,
                 product.createdAt
             )
         )
@@ -60,6 +62,7 @@ export class InventoryRepository implements IInventoryRepository {
             newProduct.description,
             newProduct.quantity,
             newProduct.price,
+            newProduct.isActive,
             newProduct.createdAt
         )
         return {success:true, product}
@@ -91,15 +94,34 @@ export class InventoryRepository implements IInventoryRepository {
             newProduct!.description,
             newProduct!.quantity,
             newProduct!.price,
+            newProduct!.isActive,
             newProduct!.createdAt
         )
 
         return {success:true, product}
     }
 
-    async deleteProduct(id: string): Promise<{ success: boolean; }> {
-        await InventoryModel.findByIdAndDelete(id)
-        return {success:true}
+    async deleteProduct(id: string): Promise<Inventory> {
+        const existingProduct=await InventoryModel.findById(id)
+        const newProduct=await InventoryModel.findByIdAndUpdate(
+            id,
+            {$set:{
+                isActive:!existingProduct?.isActive
+            }},
+            {new:true}
+        )
+        const product=new Inventory (
+            String(newProduct!._id),
+            newProduct!.name,
+            newProduct!.normalizedName,
+            newProduct!.description,
+            newProduct!.quantity,
+            newProduct!.price,
+            newProduct!.isActive,
+            newProduct!.createdAt
+        )
+
+        return product
     }
 
     async decreaseQuantity(id: string, quantity: number): Promise<Inventory> {
@@ -118,10 +140,26 @@ export class InventoryRepository implements IInventoryRepository {
             newProduct!.description,
             newProduct!.quantity,
             newProduct!.price,
+            newProduct!.isActive,
             newProduct!.createdAt
         )
 
         return product
+    }
+
+    async findById(id: string): Promise<Inventory> {
+        const product=await InventoryModel.findById(id)
+
+        return new Inventory (
+            String(product!._id),
+            product!.name,
+            product!.normalizedName,
+            product!.description,
+            product!.quantity,
+            product!.price,
+            product!.isActive,
+            product!.createdAt
+        )
     }
 
 }

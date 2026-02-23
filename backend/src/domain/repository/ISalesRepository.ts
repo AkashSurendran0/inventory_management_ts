@@ -2,12 +2,11 @@ import { Sale } from "../entity/Sale";
 
 type Data = {
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number,
-    productId?:string
 }
 
 

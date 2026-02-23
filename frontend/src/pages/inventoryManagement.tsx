@@ -18,6 +18,7 @@ type Data = {
     description:string,
     quantity:number,
     price:number,
+    isActive?:boolean
     createdAt?:Date
 }
 
@@ -86,8 +87,10 @@ function InventoryManagement() {
     }
 
     const handleConfirmDelete = async (id: string) => {
-        await deleteProduct(id)
-        setItems(items.filter((item) => item._id !== id))
+        const product=await deleteProduct(id)
+        setItems(prev => (
+            prev.map((item) => item._id == id ? product.result : item)
+        ))
         setIsDeleteModalOpen(false)
         setSelectedItem(null)
     }

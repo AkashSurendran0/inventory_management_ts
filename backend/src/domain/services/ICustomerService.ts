@@ -19,5 +19,5 @@ export interface IEditCustomer {
 }
 
 export interface IDeleteCustomer {
-    deleteCustomer(id:string): Promise<{success:boolean}>
+    deleteCustomer(id:string): Promise<Customer>
 }

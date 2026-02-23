@@ -4,7 +4,8 @@ export interface ICustomer extends Document {
     name:string,
     normalizedName:string,
     address:string,
-    phone:string
+    phone:string,
+    isActive:boolean,
 }
 
 const customerSchema: Schema<ICustomer> = new Schema (
@@ -24,7 +25,11 @@ const customerSchema: Schema<ICustomer> = new Schema (
         phone:{
             type:String,
             required:true
-        }
+        },
+        isActive:{
+            type:Boolean,
+            default:true
+        },
     },
     {timestamps:true}
 )

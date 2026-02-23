@@ -20,5 +20,5 @@ export interface IEditProduct {
 }
 
 export interface IDeleteProduct {
-    deleteProduct(id:string): Promise<{success:boolean}>
+    deleteProduct(id:string): Promise<Inventory>
 }

@@ -1,15 +1,31 @@
-type Data = {
+
+type Sale = {
     _id?:string,
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
 }
 
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
+
 type Props = {
-    filteredSalesData: Data[]
+    filteredSalesData: SaleData[]
 }
 
 
@@ -50,8 +66,8 @@ function SalesReportTable({filteredSalesData}: Props) {
                   }`}
                 >
                   <td className="px-6 py-4 text-slate-300 print:text-black">{new Date(sale.date).toLocaleDateString()}</td>
-                  <td className="px-6 py-4 text-slate-300 print:text-black">{sale.productName}</td>
-                  <td className="px-6 py-4 text-slate-300 print:text-black">{sale.customerName}</td>
+                  <td className="px-6 py-4 text-slate-300 print:text-black">{sale.productDetails.productName}</td>
+                  <td className="px-6 py-4 text-slate-300 print:text-black">{sale.customerDetails?.customerName ?? sale.customerId}</td>
                   <td className="px-6 py-4 text-right text-slate-300 print:text-black">
                     {sale.quantity}
                   </td>

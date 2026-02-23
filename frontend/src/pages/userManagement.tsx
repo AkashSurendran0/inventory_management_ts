@@ -16,8 +16,10 @@ import EditCustomerModal from '../components/editCustomerModal.tsx'
 type Data = {
     _id?:string,
     name:string,
+    normalizedName?:string,
     address:string,
-    phone:string
+    phone:string,
+    isActive?:boolean
 }
 
 export default function CustomerPage() {
@@ -82,8 +84,10 @@ export default function CustomerPage() {
   }
 
   const handleConfirmDelete = async (id: string) => {
-    await deleteUser(id)
-    setCustomers(customers.filter((customer) => customer._id !== id))
+    const customer=await deleteUser(id)
+    setCustomers(prev => (
+        prev.map((item) => item._id == id ? customer.result : item)
+    ))
     setIsDeleteModalOpen(false)
     setSelectedCustomer(null)
   }

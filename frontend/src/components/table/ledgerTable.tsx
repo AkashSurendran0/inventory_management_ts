@@ -1,17 +1,32 @@
 import React from "react";
 
-type Data = {
+type Sale = {
     _id?:string,
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
 }
 
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
+
 type Props = {
-    customerLedgerData: Data[] | null
+    customerLedgerData: SaleData[] | null
 }
 
 function LedgerTable({customerLedgerData}: Props) {
@@ -45,7 +60,7 @@ function LedgerTable({customerLedgerData}: Props) {
                   }`}
                 >
                   <td className="px-6 py-4 text-slate-300 print:text-black">{new Date(item.date).toLocaleDateString()}</td>
-                  <td className="px-6 py-4 text-slate-300 print:text-black">{item.productName}</td>
+                  <td className="px-6 py-4 text-slate-300 print:text-black">{item.productDetails.productName}</td>
                   <td className="px-6 py-4 text-right text-slate-300 print:text-black">
                     {item.quantity}
                   </td>

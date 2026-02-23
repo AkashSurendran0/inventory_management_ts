@@ -30,15 +30,30 @@ type Errors = {
 type Sale = {
     _id?:string,
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
 }
 
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
+
 type Props = {
-    onsuccess:(sale: Sale)=>void
+    onsuccess:(sale: SaleData)=>void
 }
 
 function AddSaleCard({ onsuccess }: Props) {
@@ -52,9 +67,7 @@ function AddSaleCard({ onsuccess }: Props) {
     saleDate: new Date().toISOString().split("T")[0],
   });
   const [selectedProduct, setSelectedProduct] = useState<Products | null>(null);
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
-    null,
-  );
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   //   const selectedProduct = products.find(
   //     (p) => p._id === parseInt(formData.product),
   //   );
@@ -64,13 +77,13 @@ function AddSaleCard({ onsuccess }: Props) {
 
   useEffect(() => {
     const getProducts = async () => {
-      const products = await getAllProducts(null);
-      setProducts(products.result);
+      const products = await getAllProducts('');
+      setProducts(products.result.filter(product => product.isActive))
     };
 
     const getCustomers = async () => {
-      const customers = await getAllCustomers(null);
-      setCustomers(customers.result);
+      const customers = await getAllCustomers('');
+      setCustomers(customers.result.filter(customer => customer.isActive));
     };
 
     getCustomers();
@@ -103,21 +116,21 @@ function AddSaleCard({ onsuccess }: Props) {
 
   const handleRecordSale = async () => {
     const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
+    (Object.keys(errors) as Array<keyof typeof errors>).forEach((err) => {
+      if (errors[err]) {
+        setFormErrors(errors)
+        return
+      }
+    })
 
     const newSale = {
       date: new Date(formData.saleDate),
-      productName: selectedProduct!.name,
-      productId: selectedProduct!._id,
-      customerName: formData.isCashSale ? "Cash Sale" : selectedCustomer!.name,
+      productId: selectedProduct!._id!,
+      customerId:formData.isCashSale ? "Cash Sale" : selectedCustomer!._id!,
       quantity: formData.quantity,
       pricePerUnit: selectedProduct!.price,
       totalAmount: formData.quantity * selectedProduct!.price,
     };
-
     try {
       const result = await addNewSale(newSale);
       setProducts((prev) =>

@@ -49,8 +49,8 @@ export class InventoryController {
     deleteProduct = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
             const {id}=req.params as {id: string}
-            await this._deleteProduct.deleteProduct(id)
-            res.status(STATUS_CODES.OK).json({success:true})
+            const result=await this._deleteProduct.deleteProduct(id)
+            res.status(STATUS_CODES.OK).json({result})
         } catch (error) {
             next(error)
         }

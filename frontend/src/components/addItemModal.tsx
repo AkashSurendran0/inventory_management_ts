@@ -9,6 +9,7 @@ type FormData = {
     description:string,
     quantity:number,
     price:number
+    isActive?:boolean
 }
 
 type Props = {
@@ -26,15 +27,19 @@ export default function AddItemModal({ isOpen, onClose, onSave }:Props) {
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    const { name, value, type } = e.target
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "number" ? Number(value) : value,
+    }))
   }
 
   const handleSave = async () => {
     if(!formData.name) return enqueueSnackbar('Enter a product name', {variant:'error'})
     if(!formData.description) return enqueueSnackbar('Enter product description', {variant:'error'})
     if(!formData.quantity) return enqueueSnackbar('Enter a quantity', {variant:'error'})
-    if(formData.quantity < 1 || !Number.isInteger(formData.quantity)) return enqueueSnackbar('Quantity must be greater that 0 and a whole number', {variant:'error'})
+    if((formData.quantity) < 1 || !Number.isInteger(formData.quantity)) return enqueueSnackbar('Quantity must be greater that 0 and a whole number', {variant:'error'})
     if(!formData.price) return enqueueSnackbar('Enter a price', {variant:'error'})
     if(formData.price < 1) return enqueueSnackbar('Enter a valid price', {variant:'error'})
 

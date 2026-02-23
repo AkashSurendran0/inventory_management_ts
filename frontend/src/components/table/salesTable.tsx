@@ -1,18 +1,33 @@
-import { Eye, Trash2 } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 
 type Sale = {
     _id?:string,
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
 }
 
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
+
 type Props = {
-    sales: Sale[],
-    handleDeleteClick:(data: Sale)=>void
+    sales: SaleData[],
+    handleDeleteClick:(data: SaleData)=>void
 }
 
 function SalesTable({sales, handleDeleteClick}: Props) {
@@ -57,10 +72,10 @@ function SalesTable({sales, handleDeleteClick}: Props) {
                   {new Date(sale.date).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 text-sm text-white font-medium">
-                  {sale.productName}
+                  {sale.productDetails.productName}
                 </td>
                 <td className="px-6 py-4 text-sm text-slate-300">
-                  {sale.customerName}
+                  {sale.customerId != 'Cash Sale' ? sale.customerDetails?.customerName:sale.customerId}
                 </td>
                 <td className="px-6 py-4 text-sm text-slate-300 text-center">
                   {sale.quantity}
@@ -73,9 +88,6 @@ function SalesTable({sales, handleDeleteClick}: Props) {
                 </td>
                 <td className="px-6 py-4 text-sm text-center">
                   <div className="flex items-center justify-center gap-2">
-                    <button className="p-2 hover:bg-slate-700 rounded-lg transition-colors text-slate-400 hover:text-blue-400">
-                      <Eye size={16} />
-                    </button>
                     <button
                       onClick={() => handleDeleteClick(sale)}
                       className="p-2 hover:bg-slate-700 rounded-lg transition-colors text-slate-400 hover:text-red-400"

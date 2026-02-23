@@ -31,4 +31,22 @@ export class AuthController {
         }
     }
 
+    verifyMe = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
+        try {
+            res.status(STATUS_CODES.OK).json({success:true})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    logoutUser = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
+        try {
+            res.clearCookie('token')
+            res.clearCookie('refreshToken')
+            res.status(STATUS_CODES.OK).json({success:true})
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }

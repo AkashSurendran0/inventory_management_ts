@@ -6,6 +6,7 @@ export class Inventory {
         public description:string,
         public quantity:number,
         public price:number,
+        public isActive:boolean,
         public createdAt:Date
     ) {}
 }

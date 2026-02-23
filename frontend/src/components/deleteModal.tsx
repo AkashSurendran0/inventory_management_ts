@@ -5,14 +5,39 @@ import { AlertTriangle } from 'lucide-react'
 type Item = {
     _id?:string,
     name?:string,
-    productName?:string,
+    productId?:string,
+}
+
+type Sale = {
+    _id?:string,
+    date:Date,
+    productId:string,
+    customerId:string,
+    quantity:number,
+    pricePerUnit:number,
+    totalAmount:number
+}
+
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails:CustomerDetails
 }
 
 type Props = {
     isOpen:boolean,
     onClose:()=>void,
     onConfirm:(id:string)=>void,
-    item:Item
+    item:Item | SaleData
 }
 
 export default function DeleteModal({ isOpen, onClose, onConfirm, item }: Props) {
@@ -28,13 +53,34 @@ export default function DeleteModal({ isOpen, onClose, onConfirm, item }: Props)
                 </div>
             </div>
 
+            {'productDetails' in item ? (
+                <>
+                    <h2 className="text-xl font-semibold text-white text-center mb-2">
+                        Delete Item
+                    </h2>
+                    <p className="text-slate-400 text-center mb-6">
+                        Are you sure you want to delete{" "}
+                        <span className="font-semibold text-white">
+                            {`Sale - ${item.productDetails.productName}`}
+                        </span>
+                        ? This action cannot be undone.
+                    </p>
+                </>
+                ) : (
+                <>
+                    <h2 className="text-xl font-semibold text-white text-center mb-2">
+                        Change Status
+                    </h2>
+                    <p className="text-slate-400 text-center mb-6">
+                        Are you sure you want to change status of{" "}
+                        <span className="font-semibold text-white">
+                            "{item.name}"
+                        </span>
+                        ?
+                    </p>
+                </>
+            )}
             {/* Content */}
-            <h2 className="text-xl font-semibold text-white text-center mb-2">
-                Delete Item
-            </h2>
-            <p className="text-slate-400 text-center mb-6">
-                Are you sure you want to delete <span className="font-semibold text-white">"{item.name ?? `Sale - ${item.productName}`}"</span>? This action cannot be undone.
-            </p>
 
             {/* Buttons */}
             <div className="flex gap-3">
@@ -48,7 +94,7 @@ export default function DeleteModal({ isOpen, onClose, onConfirm, item }: Props)
                 onClick={()=>onConfirm(item._id!)}
                 className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
             >
-                Delete
+                Confirm
             </button>
             </div>
         </div>

@@ -8,8 +8,10 @@ import { useEffect } from 'react'
 type Data = {
     _id?:string,
     name:string,
+    normalizedName?:string,
     address:string,
-    phone:string
+    phone:string,
+    isActive?:boolean,
 }
 
 type Props = {

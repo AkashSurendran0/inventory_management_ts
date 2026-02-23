@@ -22,15 +22,30 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-type Sales = {
-  _id?: string;
-  date: Date;
-  productName: string;
-  customerName: string;
-  quantity: number;
-  pricePerUnit: number;
-  totalAmount: number;
-};
+type Sale = {
+    _id?:string,
+    date:Date,
+    productId:string,
+    customerId:string,
+    quantity:number,
+    pricePerUnit:number,
+    totalAmount:number
+}
+
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
 
 type Product = {
   _id?: string;
@@ -58,7 +73,7 @@ export default function ReportsPage() {
 
   const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [allSales, setAllSales] = useState<Sales[]>([]);
+  const [allSales, setAllSales] = useState<SaleData[]>([]);
 
   useEffect(() => {
     const getCustomers = async () => {
@@ -88,9 +103,9 @@ export default function ReportsPage() {
     const matchesFrom = !from || saleDate >= from;
     const matchesTo = !to || saleDate <= to;
     const productMatch =
-      selectedProduct === "all" || sale.productName === selectedProduct;
+      selectedProduct === "all" || sale.productDetails.productName === selectedProduct;
     const customerMatch =
-      selectedCustomer === "all" || sale.customerName === selectedCustomer;
+      selectedCustomer === "all" || sale.customerDetails?.customerName === selectedCustomer;
     return matchesFrom && matchesTo && productMatch && customerMatch;
   });
 
@@ -109,7 +124,7 @@ export default function ReportsPage() {
     // setSelectedCustomer(customer.name)
     customerName = customer?.name;
     customerLedgerData = allSales.filter(
-      (sale) => sale.customerName == customer?.name,
+      (sale) => sale.customerDetails?.customerName == customer?.name,
     );
   }
   const totalPurchased =
@@ -141,8 +156,8 @@ export default function ReportsPage() {
       if (activeTab == "sales") {
         const formattedData = filteredSalesData.map((sale) => ({
           Date: new Date(sale.date).toLocaleDateString(),
-          "Product Name": sale.productName,
-          "Customer Name": sale.customerName || "Cash Sale",
+          "Product Name": sale.productDetails.productName,
+          "Customer Name": sale.customerDetails?.customerName || "Cash Sale",
           Quantity: sale.quantity,
           "Price per Unit": sale.pricePerUnit,
           "Total Amount": sale.quantity * sale.pricePerUnit,
@@ -167,7 +182,7 @@ export default function ReportsPage() {
       } else if (activeTab == "ledger") {
         const formattedData = customerLedgerData!.map((customer) => ({
           Date: new Date(customer.date).toLocaleDateString(),
-          "Product Name": customer.productName,
+          "Product Name": customer.productDetails.productName,
           Quantity: customer.quantity,
           "Total Amount": customer.quantity * customer.pricePerUnit,
         }));
@@ -185,8 +200,8 @@ export default function ReportsPage() {
 
         const tableData = filteredSalesData.map((sale) => [
           new Date(sale.date).toLocaleDateString(),
-          sale.productName,
-          sale.customerName || "Cash Sale",
+          sale.productDetails.productName,
+          sale.customerDetails?.customerName || "Cash Sale",
           sale.quantity,
           sale.pricePerUnit,
           sale.quantity * sale.pricePerUnit,
@@ -234,7 +249,7 @@ export default function ReportsPage() {
 
         const tableData = customerLedgerData!.map((sale) => [
           new Date(sale.date).toLocaleDateString(),
-          sale.productName,
+          sale.productDetails.productName,
           sale.quantity,
           sale.quantity * sale.pricePerUnit,
         ]);
@@ -255,8 +270,8 @@ export default function ReportsPage() {
 
         const tableData = filteredSalesData.map((sale) => [
           new Date(sale.date).toLocaleDateString(),
-          sale.productName,
-          sale.customerName || "Cash Sale",
+          sale.productDetails.productName,
+          sale.customerDetails?.customerName || "Cash Sale",
           sale.quantity,
           sale.pricePerUnit,
           sale.quantity * sale.pricePerUnit,
@@ -330,7 +345,7 @@ export default function ReportsPage() {
 
         const tableData = customerLedgerData!.map((sale) => [
           new Date(sale.date).toLocaleDateString(),
-          sale.productName,
+          sale.productDetails.productName,
           sale.quantity,
           sale.quantity * sale.pricePerUnit,
         ]);

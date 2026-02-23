@@ -2,8 +2,8 @@ import mongoose, { Schema, Document, Model } from 'mongoose'
 
 export interface ISalesSchema extends Document {
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
@@ -15,11 +15,11 @@ const salesSchema: Schema<ISalesSchema> = new Schema (
             type:Date,
             required:true
         },
-        productName:{
+        productId:{
             type:String,
             required:true
         },
-        customerName:{
+        customerId:{
             type:String,
             required:true
         },

@@ -1,19 +1,25 @@
-import { Edit2, Trash2, Eye } from 'lucide-react'
+import { AlertTriangle, Edit2 } from "lucide-react";
 
 type Customers = {
-    _id?:string,
-    name:string,
-    address:string,
-    phone:string
-}
+  _id?: string;
+  name: string;
+  normalizedName?: string;
+  address: string;
+  phone: string;
+  isActive?: boolean;
+};
 
 type Props = {
-    customers:Customers[],
-    handleDeleteClick:(customer: Customers)=>void
-    handleEditClick:(customer: Customers)=>void
-}
+  customers: Customers[];
+  handleDeleteClick: (customer: Customers) => void;
+  handleEditClick: (customer: Customers) => void;
+};
 
-function CustomersTable({customers, handleDeleteClick, handleEditClick}: Props) {
+function CustomersTable({
+  customers,
+  handleDeleteClick,
+  handleEditClick,
+}: Props) {
   return (
     <div className="bg-slate-800 rounded-lg border border-slate-700 shadow-lg overflow-hidden">
       {/* Table */}
@@ -29,6 +35,9 @@ function CustomersTable({customers, handleDeleteClick, handleEditClick}: Props) 
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
                 Mobile Number
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
+                Status
               </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-slate-300">
                 Actions
@@ -52,11 +61,20 @@ function CustomersTable({customers, handleDeleteClick, handleEditClick}: Props) 
                 <td className="px-6 py-4 text-white text-sm">
                   {customer.phone}
                 </td>
-                <td className="px-6 py-4">
+                {customer.isActive ? (
+                  <td className="px-6 py-4 text-green-600 font-medium">
+                    Active
+                  </td>
+                ) : (
+                  <td className="px-6 py-4 text-red-500 font-medium">
+                    Inactive
+                  </td>
+                )}
+                <td className="px-6">
                   <div className="flex gap-2 flex-wrap">
-                    <button 
-                    className="flex items-center gap-1 px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition-colors text-sm font-medium"
-                    onClick={()=>handleEditClick(customer)}
+                    <button
+                      className="flex items-center gap-1 px-3 py-1 bg-slate-700 text-slate-300 rounded hover:bg-slate-600 transition-colors text-sm font-medium"
+                      onClick={() => handleEditClick(customer)}
                     >
                       <Edit2 size={16} />
                       Edit
@@ -65,12 +83,8 @@ function CustomersTable({customers, handleDeleteClick, handleEditClick}: Props) 
                       onClick={() => handleDeleteClick(customer)}
                       className="flex items-center gap-1 px-3 py-1 bg-red-600/20 text-red-400 rounded hover:bg-red-600/30 transition-colors text-sm font-medium"
                     >
-                      <Trash2 size={16} />
-                      Delete
-                    </button>
-                    <button className="flex items-center gap-1 px-3 py-1 bg-blue-600/20 text-blue-400 rounded hover:bg-blue-600/30 transition-colors text-sm font-medium">
-                      <Eye size={16} />
-                      Ledger
+                      <AlertTriangle size={16} />
+                      Change Status
                     </button>
                   </div>
                 </td>
@@ -83,9 +97,7 @@ function CustomersTable({customers, handleDeleteClick, handleEditClick}: Props) 
       {/* Empty State */}
       {customers && customers.length === 0 && (
         <div className="py-12 text-center">
-          <p className="text-slate-400 text-lg">
-              No customers found
-          </p>
+          <p className="text-slate-400 text-lg">No customers found</p>
         </div>
       )}
     </div>

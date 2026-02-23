@@ -3,8 +3,10 @@ import { api } from "../lib/api";
 type Data = {
     _id?:string,
     name:string,
+    normalizedName?:string,
     address:string,
-    phone:string
+    phone:string,
+    isActive?:boolean
 }
 
 const backendRoute=import.meta.env.VITE_BACKEND_ROUTE
@@ -21,6 +23,6 @@ export const editCustomer = async (data: Data, id: string): Promise<{result: Dat
     return await api.patch(`${backendRoute}/v1/customer/customers/${id}`, data)
 }
 
-export const deleteUser = async (id:string): Promise<{result : {success:boolean}}> => {
+export const deleteUser = async (id:string): Promise<{result : Data}> => {
     return await api.delete(`${backendRoute}/v1/customer/customers/${id}`)
 }

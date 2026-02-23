@@ -2,14 +2,29 @@ import { api } from "../lib/api";
 
 const backendRoute=import.meta.env.VITE_BACKEND_ROUTE
 
-type Data = {
+type Sale = {
     _id?:string,
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
+}
+
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
 }
 
 type Product = {
@@ -22,11 +37,11 @@ type Product = {
 }
 
 
-export const addNewSale = async (data: Data): Promise<{result: {product:Product, sale:Data}}> => {
+export const addNewSale = async (data: Sale): Promise<{result: {product:Product, sale:SaleData}}> => {
     return await api.post(`${backendRoute}/v1/sale/sales`, data)
 }
 
-export const getSales = async (): Promise<{result: Data[]}> => {
+export const getSales = async (): Promise<{result: SaleData[]}> => {
     return await api.get(`${backendRoute}/v1/sale/sales`)
 }
 

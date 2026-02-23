@@ -6,6 +6,7 @@ export interface IInventory extends Document {
     description:string,
     quantity:number,
     price:number,
+    isActive:boolean,
     createdAt:Date
 }
 
@@ -30,6 +31,10 @@ const inventorySchema:Schema<IInventory> = new Schema (
         price:{
             type:Number,
             required:true
+        },
+        isActive:{
+            type:Boolean,
+            default:true
         }
     },
     {timestamps:true}

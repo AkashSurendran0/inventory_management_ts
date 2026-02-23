@@ -3,16 +3,30 @@ import { Sale } from "../entity/Sale"
 
 type Data = {
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number,
-    productId?:string
+}
+
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
 }
 
 export interface IAddNewSale {
-    addNewSale(data: Data): Promise<{product:Inventory, sale:Sale}>
+    addNewSale(data: Data): Promise<{product:Inventory, sale:SaleData}>
 }
 
 export interface IGetAllSales {

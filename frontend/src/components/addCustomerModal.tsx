@@ -6,8 +6,10 @@ import { enqueueSnackbar } from 'notistack'
 
 type FormData = {
     name:string,
+    normalizedName?:string,
     address:string,
-    phone:string
+    phone:string,
+    isActive?:boolean,
 }
 
 type Props = {

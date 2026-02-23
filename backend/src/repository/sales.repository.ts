@@ -6,11 +6,11 @@ import { SalesModel } from "../models/sale.model";
 @injectable()
 export class SalesRepository implements ISalesRepository {
 
-    async addSale(data: { date: Date; productName: string; customerName: string; quantity: number; pricePerUnit: number; totalAmount: number; productId?: string; }): Promise<Sale> {
+    async addSale(data: { date: Date; productId: string; customerId: string; quantity: number; pricePerUnit: number; totalAmount: number; }): Promise<Sale> {
         const newSale=await SalesModel.insertOne({
             date:data.date,
-            productName:data.productName,
-            customerName:data.customerName,
+            productId:data.productId,
+            customerId:data.customerId,
             quantity:data.quantity,
             pricePerUnit:data.pricePerUnit,
             totalAmount:data.totalAmount
@@ -19,8 +19,8 @@ export class SalesRepository implements ISalesRepository {
         const sale=new Sale ( 
             String(newSale._id),
             newSale.date,
-            newSale.productName,
-            newSale.customerName,
+            newSale.productId,
+            newSale.customerId,
             newSale.quantity,
             newSale.pricePerUnit,
             newSale.totalAmount
@@ -36,8 +36,8 @@ export class SalesRepository implements ISalesRepository {
             new Sale(
                 String(sale._id),
                 sale.date,
-                sale.productName,
-                sale.customerName,
+                sale.productId,
+                sale.customerId,
                 sale.quantity,
                 sale.pricePerUnit,
                 sale.totalAmount

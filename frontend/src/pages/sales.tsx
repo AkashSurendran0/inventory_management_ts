@@ -11,15 +11,30 @@ import { deleteSale, getSales } from '../services/salesService.ts'
 type Sale = {
     _id?:string,
     date:Date,
-    productName:string,
-    customerName:string,
+    productId:string,
+    customerId:string,
     quantity:number,
     pricePerUnit:number,
     totalAmount:number
 }
 
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
+
 export default function SalesPage() {
-  const [sales, setSales] = useState<Sale[]>([])
+  const [sales, setSales] = useState<SaleData[]>([])
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null)
@@ -29,13 +44,14 @@ export default function SalesPage() {
   useEffect(()=>{
     const getAllSales = async () => {
       const sales=await getSales()
+      console.log(sales)
       setSales(sales.result)
     }
 
     getAllSales()
   }, [])
 
-  const handleDeleteClick = (sale: Sale) => {
+  const handleDeleteClick = (sale: SaleData) => {
     setSelectedSale(sale)
     setIsDeleteModalOpen(true)
   }
@@ -47,8 +63,7 @@ export default function SalesPage() {
     setSelectedSale(null)
   }
 
-  const handleAddSales = (sale: Sale) => {
-    console.log(sale)
+  const handleAddSales = (sale: SaleData) => {
     setSales([...sales, sale])
   }
 

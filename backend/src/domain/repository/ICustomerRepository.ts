@@ -11,5 +11,6 @@ export interface ICustomerRepository {
     getAllCustomers(): Promise<Customer[]>
     getAllCustomersByQuery(query:string): Promise<Customer[]>
     editCustomer(data:Data, id:string): Promise<{success:boolean, customer?:Customer}>
-    deleteCustomer(id:string): Promise<{success: boolean}>
+    deleteCustomer(id:string): Promise<Customer>
+    findById(id:string): Promise<Customer>
 }
