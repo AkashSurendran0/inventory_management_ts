@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import LoginPage from './pages/login'
+import InventoryManagement from './pages/inventoryManagement'
+import {SnackbarProvider} from 'notistack'
+import CustomerPage from './pages/userManagement'
+import SalesPage from './pages/sales'
+import ReportsPage from './pages/reports'
+import AuthGuard from './middleware/authGuard'
+import { Navigate } from "react-router-dom"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <SnackbarProvider
+        maxSnack={3} 
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={3000}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path='/login' 
+            element={
+              <AuthGuard type="public">
+                <LoginPage/>
+              </AuthGuard>
+            }/>
+            <Route path='/inventoryManagement' 
+            element={
+              <AuthGuard type="protected">
+                <InventoryManagement/>
+              </AuthGuard>
+            }/>
+            <Route path='/customerManagement' 
+            element={
+              <AuthGuard type="protected">
+                <CustomerPage/>
+              </AuthGuard>
+            }/>
+            <Route path='/sales' 
+            element={
+              <AuthGuard type="protected">
+                <SalesPage/>
+              </AuthGuard>
+            }/>
+            <Route path='/reports' 
+            element={
+              <AuthGuard type="protected">
+                <ReportsPage/>
+              </AuthGuard>
+            }/>
+          </Routes>
+        </BrowserRouter>
+      </SnackbarProvider>
   )
+
 }
 
 export default App

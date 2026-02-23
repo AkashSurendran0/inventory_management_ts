@@ -13,7 +13,7 @@ export const addNewCustomer = async (data: Data): Promise<{result: Data}> => {
     return await api.post(`${backendRoute}/v1/customer/customers`, data)
 }
 
-export const getAllCustomers = async (query: string): Promise<{result: Data[]}> => {
+export const getAllCustomers = async (query: string | null): Promise<{result: Data[]}> => {
     return await api.get(`${backendRoute}/v1/customer/customers?query=${query}`)
 }
 
