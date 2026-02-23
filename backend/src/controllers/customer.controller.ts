@@ -14,7 +14,7 @@ export class CustomerController {
         @inject(TYPES.IDeleteCustomer) private _deleteCustomer:IDeleteCustomer
     ){}
 
-    addCustomer = async (req:Request, res:Response, next:NextFunction) => {
+    addCustomer = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
             const data=req.body
             const result=await this._addCustomer.addCustomer(data)
@@ -24,7 +24,7 @@ export class CustomerController {
         }
     }
 
-    getAllCustomers = async (req:Request, res:Response, next:NextFunction) => {
+    getAllCustomers = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
             let {query}=req.query as {query? : string}
             if(!query || query == 'undefined') query=undefined
@@ -35,7 +35,7 @@ export class CustomerController {
         }
     }
 
-    editCustomer = async (req:Request, res:Response, next:NextFunction) => {
+    editCustomer = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
             const data=req.body
             const {id} = req.params as {id:string}
@@ -46,7 +46,7 @@ export class CustomerController {
         }
     }
 
-    deleteCustomer = async (req:Request, res:Response, next:NextFunction) => {
+    deleteCustomer = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
             const {id}=req.params as {id:string}
             const result=await this._deleteCustomer.deleteCustomer(id)

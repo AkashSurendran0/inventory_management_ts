@@ -15,5 +15,11 @@ export const TYPES = {
     ICustomerRepository:'ICustomerRepository',
     IGetAllCustomer:'IGetAllCustomer',
     IEditCustomer:'IEditCustomer',
-    IDeleteCustomer:'IDeleteCustomer'
+    IDeleteCustomer:'IDeleteCustomer',
+    SalesController:'SalesController',
+    IAddNewSale:'IAddNewSale',
+    ISalesRepository:'ISalesRepository',
+    IGetAllSales:'IGetAllSales',
+    IDeleteSale:'IDeleteSale',
+    ISendReport:'ISendReport'
 }

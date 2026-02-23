@@ -102,4 +102,26 @@ export class InventoryRepository implements IInventoryRepository {
         return {success:true}
     }
 
+    async decreaseQuantity(id: string, quantity: number): Promise<Inventory> {
+        const newProduct=await InventoryModel.findByIdAndUpdate(
+            id,
+            {$inc:{
+                quantity:-quantity
+            }},
+            {new:true}
+        )
+
+        const product=new Inventory (
+            String(newProduct!._id),
+            newProduct!.name,
+            newProduct!.normalizedName,
+            newProduct!.description,
+            newProduct!.quantity,
+            newProduct!.price,
+            newProduct!.createdAt
+        )
+
+        return product
+    }
+
 }
