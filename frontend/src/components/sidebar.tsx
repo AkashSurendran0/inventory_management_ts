@@ -5,13 +5,13 @@ import { Menu, X, Package, Users, ShoppingCart, BarChart3, LogOut } from 'lucide
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { logoutUser } from '../services/authService'
-// import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../hooks/useAuth'
 
 export default function Sidebar() {
   const location=useLocation()
   const navigate=useNavigate()
   const [isOpen, setIsOpen] = useState(false)
-//   const {setIsAuth}=useAuth()
+  const {setIsAuth}=useAuth()
 
   const menuItems = [
     { icon: Package, label: 'Inventory', href: '/inventoryManagement', active: false },
@@ -22,7 +22,7 @@ export default function Sidebar() {
 
   const logout = async () => {
     await logoutUser()
-    // setIsAuth(false)
+    setIsAuth(false)
     navigate('/login')
   }
 

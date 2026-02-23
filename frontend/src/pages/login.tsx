@@ -3,7 +3,7 @@ import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { loginUser } from '../services/authService.ts';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-// import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 
 export default function LoginPage() {
   const {enqueueSnackbar} = useSnackbar()
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-//   const {setIsAuth} = useAuth()
+  const {setIsAuth} = useAuth()
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function LoginPage() {
     try {
       await loginUser(data)
       enqueueSnackbar('User logged in successfully', {variant:'success'})
-    //   setIsAuth(true)
+      setIsAuth(true)
       navigate('/inventoryManagement')
     } catch (error) {
         if(error instanceof Error){
