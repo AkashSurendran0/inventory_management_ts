@@ -1,4 +1,3 @@
-import React from "react";
 
 type Sale = {
     _id?:string,
