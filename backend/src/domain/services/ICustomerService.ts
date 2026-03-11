@@ -6,12 +6,13 @@ type Data = {
     phone:string
 }
 
+
 export interface IAddCustomer {
     addCustomer(data: Data): Promise<Customer>
 }
 
 export interface IGetAllCustomer {
-    getAllCustomers(query:string | undefined): Promise<Customer[]>
+    getAllCustomers(query:string | undefined, page: number, limit: number): Promise<{customers: Customer[], totalPages: number}>
 }
 
 export interface IEditCustomer {

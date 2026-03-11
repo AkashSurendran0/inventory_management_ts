@@ -6,6 +6,22 @@ import { ISalesRepository } from "../../domain/repository/ISalesRepository";
 import { IInventoryRepository } from "../../domain/repository/IInventoryRepository";
 import { ICustomerRepository } from "../../domain/repository/ICustomerRepository";
 
+type ProductDetails = {
+    _id:string,
+    productName:string
+}
+
+type CustomerDetails = {
+    _id:string,
+    customerName:string
+}
+
+type SaleData = Sale & {
+    productDetails:ProductDetails,
+    customerDetails?:CustomerDetails
+}
+
+
 @injectable()
 export class GetAllSales implements IGetAllSales {
 
@@ -15,10 +31,10 @@ export class GetAllSales implements IGetAllSales {
         @inject(TYPES.ICustomerRepository) private _customerRepository:ICustomerRepository
     ){}
 
-    async getAllSales(): Promise<Sale[]> {
-        const allSales = await this._salesRepository.getAllSales()
+    async getAllSales(page: number, limit: number): Promise<{sales: SaleData[], totalPages: number}> {
+        const result = await this._salesRepository.getAllSales(page, limit)
         let enrichedSales=[]
-        for (let sale of allSales){
+        for (let sale of result.sales){
             const product=await this._inventoryRepository.findById(sale.productId)
             let customer=null
             if(sale.customerId != 'Cash Sale'){
@@ -48,7 +64,7 @@ export class GetAllSales implements IGetAllSales {
             else enrichedSales.push(enrichedSale)
         }
 
-        return enrichedSales
+        return {sales: enrichedSales, totalPages: result.totalPages}
     }
 
 }

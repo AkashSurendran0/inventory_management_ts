@@ -11,12 +11,12 @@ export class GetAllProducts implements IGetAllProducts {
         @inject(TYPES.IInventoryRepository) private _inventoryRepository:IInventoryRepository
     ){}
 
-    async getAllProducts(query: string | undefined): Promise<Inventory[]> {
+    async getAllProducts(query: string | undefined, page: number, limit: number): Promise<{products: Inventory[], totalPages: number}> {
         let products
         if(query){
-            products=await this._inventoryRepository.findProductsByQuery(query)
+            products=await this._inventoryRepository.findProductsByQuery(query, page, limit)
         }else{
-            products=await this._inventoryRepository.findAllProducts()
+            products=await this._inventoryRepository.findAllProducts(page, limit)
         }
         return products
     }

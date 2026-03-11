@@ -16,9 +16,11 @@ export class InventoryController {
 
     getProducts = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
-            let {query}=req.query as { query?: string }
+            let {query, page, limit}=req.query as { query?: string, page?: string, limit?: string }
+            const pageNumber = page ? parseInt(page) : 1;
+            const limitNumber = limit ? parseInt(limit) : 2;
             if(!query || query == 'undefined') query=undefined
-            const result=await this._getAllProducts.getAllProducts(query)
+            const result=await this._getAllProducts.getAllProducts(query, pageNumber, limitNumber)
             res.status(STATUS_CODES.OK).json({result})
         } catch (error) {
             next(error)

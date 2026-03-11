@@ -77,13 +77,13 @@ function AddSaleCard({ onsuccess }: Props) {
 
   useEffect(() => {
     const getProducts = async () => {
-      const products = await getAllProducts('');
-      setProducts(products.result.filter(product => product.isActive))
+      const products = await getAllProducts('', 1, Infinity);
+      setProducts(products.result.products.filter(product => product.isActive))
     };
 
     const getCustomers = async () => {
-      const customers = await getAllCustomers('');
-      setCustomers(customers.result.filter(customer => customer.isActive));
+      const customers = await getAllCustomers('', 1, Infinity);
+      setCustomers(customers.result.customers.filter(customer => customer.isActive));
     };
 
     getCustomers();

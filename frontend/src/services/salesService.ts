@@ -36,13 +36,18 @@ type Product = {
     createdAt?:Date
 }
 
+type Response = {
+    sales: SaleData[],
+    totalPages: number
+}
+
 
 export const addNewSale = async (data: Sale): Promise<{result: {product:Product, sale:SaleData}}> => {
     return await api.post(`${backendRoute}/v1/sale/sales`, data)
 }
 
-export const getSales = async (): Promise<{result: SaleData[]}> => {
-    return await api.get(`${backendRoute}/v1/sale/sales`)
+export const getSales = async (page: number, limit: number): Promise<{result: Response}> => {
+    return await api.get(`${backendRoute}/v1/sale/sales?page=${page}&limit=${limit}`)
 }
 
 export const deleteSale = async (id: string): Promise<{success:boolean}> => {

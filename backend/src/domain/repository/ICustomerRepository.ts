@@ -8,8 +8,8 @@ type Data = {
 
 export interface ICustomerRepository {
     addCustomer(data: Data): Promise<{success:boolean, customer?:Customer}>
-    getAllCustomers(): Promise<Customer[]>
-    getAllCustomersByQuery(query:string): Promise<Customer[]>
+    getAllCustomers(page: number, limit: number): Promise<{customers: Customer[], totalPages: number}>
+    getAllCustomersByQuery(query:string, page: number, limit: number): Promise<{customers: Customer[], totalPages: number}>
     editCustomer(data:Data, id:string): Promise<{success:boolean, customer?:Customer}>
     deleteCustomer(id:string): Promise<Customer>
     findById(id:string): Promise<Customer>

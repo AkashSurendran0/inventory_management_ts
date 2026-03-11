@@ -8,7 +8,7 @@ type Data = {
 }
 
 export interface IGetAllProducts {
-    getAllProducts(query: string | undefined): Promise<Inventory[]>
+    getAllProducts(query: string | undefined, page: number, limit: number): Promise<{products: Inventory[], totalPages: number}>
 }
 
 export interface IAddProduct {

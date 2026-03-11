@@ -8,8 +8,8 @@ type Data = {
 }
 
 export interface IInventoryRepository {
-    findProductsByQuery(query:string): Promise<Inventory[]>
-    findAllProducts(): Promise<Inventory[]>
+    findProductsByQuery(query:string, page: number, limit: number): Promise<{products: Inventory[], totalPages: number}>
+    findAllProducts(page: number, limit: number): Promise<{products: Inventory[], totalPages: number}>
     addProduct(data: Data): Promise<{success:boolean, product?:Inventory}>
     editProduct(data: Data, id:string): Promise<{success:boolean, product?:Inventory}>
     deleteProduct(id:string): Promise<Inventory>

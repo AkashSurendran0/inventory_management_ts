@@ -6,10 +6,11 @@ import { InventoryModel } from "../models/inventory.model";
 @injectable()
 export class InventoryRepository implements IInventoryRepository {
 
-    async findAllProducts(): Promise<Inventory[]> {
-        const products=await InventoryModel.find()
+    async findAllProducts(page: number, limit: number): Promise<{products: Inventory[], totalPages: number}> {
+        const allProducts=await InventoryModel.find().skip((page - 1) * limit).limit(limit)
+        const totalPages = Math.ceil(await InventoryModel.countDocuments() / limit);
 
-        return products.map(product => 
+        const products = allProducts.map(product => 
             new Inventory (
                 String(product._id),
                 product.name,
@@ -21,17 +22,24 @@ export class InventoryRepository implements IInventoryRepository {
                 product.createdAt
             )
         )
+
+        return {products, totalPages}
     }
 
-    async findProductsByQuery(query: string): Promise<Inventory[]> {
-        const products=await InventoryModel.find({
+    async findProductsByQuery(query: string, page: number, limit: number): Promise<{products: Inventory[], totalPages: number}> {
+        const allProducts=await InventoryModel.find({
             $or:[
                 {normalizedName:{$regex:query, $options:'i'}},
                 {description:{$regex:query, $options:'i'}}
             ]
-        })
+        }).skip((page - 1) * limit).limit(limit)
 
-        return products.map(product => 
+        const totalPages = Math.ceil(await InventoryModel.countDocuments({$or: [
+            {normalizedName:{$regex:query, $options:'i'}},
+            {description:{$regex:query, $options:'i'}}
+        ]}) / limit);
+
+        const products = allProducts.map(product => 
             new Inventory (
                 String(product._id),
                 product.name,
@@ -43,6 +51,8 @@ export class InventoryRepository implements IInventoryRepository {
                 product.createdAt
             )
         )
+
+        return {products, totalPages}
     }
 
     async addProduct(data: { name: string; description: string; quantity: number; price: number; }): Promise<{ success: boolean; product?: Inventory; }> {

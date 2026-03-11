@@ -35,21 +35,32 @@ type SaleData = Sale & {
 
 export default function SalesPage() {
   const [sales, setSales] = useState<SaleData[]>([])
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState("1")
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null)
+
+  const LIMIT=2
   
   // const totalSales = sales.reduce((sum, sale) => sum + parseInt(sale.totalAmount), 0)
 
   useEffect(()=>{
     const getAllSales = async () => {
-      const sales=await getSales()
-      console.log(sales)
-      setSales(sales.result)
+      const sales=await getSales(1, LIMIT)
+      setSales(sales.result.sales)
+      setTotalPages(sales.result.totalPages)  
     }
 
     getAllSales()
   }, [])
+
+  const handlePagination = async (page: number) => {
+    setCurrentPage(page.toString())
+    const sales=await getSales(page, LIMIT)
+    setSales(sales.result.sales)
+    setTotalPages(sales.result.totalPages)
+  }
 
   const handleDeleteClick = (sale: SaleData) => {
     setSelectedSale(sale)
@@ -86,7 +97,13 @@ export default function SalesPage() {
             {/* Search and Filters */}
 
             {/* Sales Table */}
-            <SalesTable sales={sales} handleDeleteClick={handleDeleteClick}/>
+            <SalesTable 
+            sales={sales} 
+            handleDeleteClick={handleDeleteClick}
+            handlePagination={handlePagination}
+            totalPages={totalPages}
+            currentPage={currentPage}
+            />
         </div>
 
         {/* Delete Modal */}

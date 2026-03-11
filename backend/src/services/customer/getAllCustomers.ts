@@ -11,11 +11,11 @@ export class GetAllCustomers implements IGetAllCustomer {
         @inject(TYPES.ICustomerRepository) private _customerRepository:ICustomerRepository
     ){}
 
-    async getAllCustomers(query: string): Promise<Customer[]> {
+    async getAllCustomers(query: string, page: number, limit: number): Promise<{customers: Customer[], totalPages: number}> {
         if(query){
-            return await this._customerRepository.getAllCustomersByQuery(query)
+            return await this._customerRepository.getAllCustomersByQuery(query, page, limit)
         }else{
-            return await this._customerRepository.getAllCustomers()
+            return await this._customerRepository.getAllCustomers(page, limit)
         }
     }
 

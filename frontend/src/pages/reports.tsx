@@ -77,18 +77,18 @@ export default function ReportsPage() {
 
   useEffect(() => {
     const getCustomers = async () => {
-      const customers = await getAllCustomers("");
-      setAllCustomers(customers.result);
+      const customers = await getAllCustomers("", 1, Infinity);
+      setAllCustomers(customers.result.customers);
     };
 
     const fetchProducts = async () => {
-      const products = await getAllProducts("");
-      setAllProducts(products.result);
+      const products = await getAllProducts("", 1, Infinity);
+      setAllProducts(products.result.products);
     };
 
     const getAllSales = async () => {
-      const sales = await getSales();
-      setAllSales(sales.result);
+      const sales = await getSales(1, Infinity);
+      setAllSales(sales.result.sales);
     };
 
     getAllSales();

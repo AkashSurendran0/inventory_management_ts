@@ -30,7 +30,7 @@ export interface IAddNewSale {
 }
 
 export interface IGetAllSales {
-    getAllSales(): Promise<Sale[]>
+    getAllSales(page: number, limit: number): Promise<{sales: SaleData[], totalPages: number}>
 }
 
 export interface IDeleteSale {

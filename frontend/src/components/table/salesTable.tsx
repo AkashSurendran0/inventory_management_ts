@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Trash2 } from 'lucide-react'
 
 type Sale = {
     _id?:string,
@@ -28,9 +28,12 @@ type SaleData = Sale & {
 type Props = {
     sales: SaleData[],
     handleDeleteClick:(data: SaleData)=>void
+    handlePagination:(page:number)=>void,
+    totalPages:number,
+    currentPage:string
 }
 
-function SalesTable({sales, handleDeleteClick}: Props) {
+function SalesTable({sales, handleDeleteClick, handlePagination, totalPages, currentPage}: Props) {
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden shadow-lg">
       <div className="overflow-x-auto">
@@ -107,6 +110,46 @@ function SalesTable({sales, handleDeleteClick}: Props) {
           <p className="text-slate-400">
             No sales found. Try adjusting your filters.
           </p>
+        </div>
+      )}
+
+      {sales.length > 0 && (
+        <div className="bg-slate-900 border-t border-slate-700 px-6 py-4 flex items-center justify-between">
+          <div className="flex gap-2">
+            <button
+              onClick={() => handlePagination(parseInt(currentPage) - 1)}
+              disabled={currentPage === "1"}
+              className="flex items-center gap-1 px-3 py-2 bg-slate-700 text-slate-300 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm"
+            >
+              <ChevronLeft size={16} />
+              Previous
+            </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePagination(page)}
+                    className={`px-3 py-2 rounded font-medium text-sm transition-colors ${
+                      currentPage === page.toString()
+                        ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                        : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+            </div>
+            <button
+              onClick={() => handlePagination(parseInt(currentPage) + 1)}
+              disabled={currentPage === totalPages.toString()}
+              className="flex items-center gap-1 px-3 py-2 bg-slate-700 text-slate-300 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm"
+            >
+              Next
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       )}
     </div>

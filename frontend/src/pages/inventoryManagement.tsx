@@ -23,6 +23,7 @@ type Data = {
 
 function InventoryManagement() {    
     const [items, setItems] = useState<Data[]>([])
+    const [totalPages, setTotalPages] = useState(0)
     const [searchQuery, setSearchQuery] = useState('')
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
@@ -30,20 +31,30 @@ function InventoryManagement() {
     const [selectedItem, setSelectedItem] = useState<Data | null>(null)
     const [clearForm, setClearForm] = useState(false)
     const debouncer=useRef<ReturnType<typeof setTimeout> | null>(null)
-
+    const [currentPage, setCurrentPage] = useState('1')
+    const LIMIT=2
     
     useEffect(() => {
         const fetchProducts = async () => {
-            const products=await getAllProducts(searchQuery)
-            setItems(products.result)
+            const products=await getAllProducts(searchQuery, 1, LIMIT)
+            setItems(products.result.products)
+            setTotalPages(products.result.totalPages)
         }
 
         fetchProducts()
     }, [])
 
     const getQueriedProducts = async (query: string) => {
-        const products=await getAllProducts(query)
-        setItems(products.result)
+        const products=await getAllProducts(query, 1, LIMIT)
+        setItems(products.result.products)
+        setTotalPages(products.result.totalPages)
+    }
+
+    const handlePagination = async (page: number) => {
+        setCurrentPage(page.toString())
+        const products=await getAllProducts(searchQuery, page, LIMIT)
+        setItems(products.result.products)
+        setTotalPages(products.result.totalPages)
     }
     
     const handleAddItem = async (newItem: Data) => {
@@ -147,7 +158,15 @@ function InventoryManagement() {
                 </div>
 
                 {/* Table Section */}
-                <InventoryTable items={items} handleDeleteClick={handleDeleteClick} openEditModal={openEditModal}/>
+                <InventoryTable 
+                items={items} 
+                handleDeleteClick={handleDeleteClick} 
+                openEditModal={openEditModal} 
+                handlePagination={handlePagination}
+                totalPages={totalPages}
+                currentPage={currentPage}
+                />
+                
             </main>
 
             {/* Modals */}

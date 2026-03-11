@@ -26,7 +26,10 @@ export class SalesController {
 
     getSales = async (req:Request, res:Response, next:NextFunction): Promise<void> => {
         try {
-            const result=await this._getAllSales.getAllSales()
+            const {query, page, limit}=req.query as {query?: string, page?: string, limit?: string}
+            const pageNumber = page ? parseInt(page) : 1;
+            const limitNumber = limit ? parseInt(limit) : 2;
+            const result=await this._getAllSales.getAllSales(pageNumber, limitNumber)
             res.status(STATUS_CODES.OK).json({result})
         } catch (error) {
             next(error)

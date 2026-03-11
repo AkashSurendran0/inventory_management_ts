@@ -12,6 +12,6 @@ type Data = {
 
 export interface ISalesRepository {
     addSale(data: Data): Promise<Sale>
-    getAllSales(): Promise<Sale[]>
+    getAllSales(page: number, limit: number): Promise<{sales: Sale[], totalPages: number}>
     deleteSale(id: string): Promise<{success:boolean}>
 }

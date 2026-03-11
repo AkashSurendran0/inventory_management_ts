@@ -33,36 +33,48 @@ export class CustomerRepository implements ICustomerRepository {
     return { success: true, customer };
   }
 
-  async getAllCustomers(): Promise<Customer[]> {
-    const customers = await CustomerModel.find();
-    return customers.map(
-      (customer) =>
-        new Customer(
-          String(customer._id),
-          customer.name,
-          customer.normalizedName,
-          customer.address,
-          customer.phone,
-          customer.isActive,
-        ),
-    );
+  async getAllCustomers(page: number, limit: number): Promise<{customers: Customer[], totalPages: number}> {
+    const customers = await CustomerModel.find().skip((page - 1) * limit).limit(limit);
+    const totalCustomers = await CustomerModel.countDocuments();
+    const totalPages = Math.ceil(totalCustomers / limit);
+
+    return {
+      customers: customers.map(
+        (customer) =>
+          new Customer(
+            String(customer._id),
+            customer.name,
+            customer.normalizedName,
+            customer.address,
+            customer.phone,
+            customer.isActive,
+          ),
+      ),
+      totalPages,
+    };
   }
 
-  async getAllCustomersByQuery(query: string): Promise<Customer[]> {
+  async getAllCustomersByQuery(query: string, page: number, limit: number): Promise<{customers: Customer[], totalPages: number}> {
     const customers = await CustomerModel.find({
       normalizedName: { $regex: query, $options: "i" },
-    });
-    return customers.map(
-      (customer) =>
-        new Customer(
-          String(customer._id),
-          customer.name,
-          customer.normalizedName,
-          customer.address,
-          customer.phone,
-          customer.isActive,
-        ),
-    );
+    }).skip((page - 1) * limit).limit(limit);
+    const totalCustomers = await CustomerModel.countDocuments({ normalizedName: { $regex: query, $options: "i" } });
+    const totalPages = Math.ceil(totalCustomers / limit);
+
+    return {
+      customers: customers.map(
+        (customer) =>
+          new Customer(
+            String(customer._id),
+            customer.name,
+            customer.normalizedName,
+            customer.address,
+            customer.phone,
+            customer.isActive,
+          ),
+      ),
+      totalPages,
+    };
   }
 
   async editCustomer(

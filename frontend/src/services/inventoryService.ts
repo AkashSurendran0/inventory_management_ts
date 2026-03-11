@@ -10,10 +10,15 @@ type Data = {
     createdAt?:Date
 }
 
+type Response = {
+    products: Data[],
+    totalPages: number
+}
+
 const backendRoute=import.meta.env.VITE_BACKEND_ROUTE
 
-export const getAllProducts = async (query: string | null): Promise<{result:Data[]}> => {
-    return await api.get(`${backendRoute}/v1/inventory/products?query=${query}`)
+export const getAllProducts = async (query: string | null, page: number, limit: number): Promise<{result:Response}> => {
+    return await api.get(`${backendRoute}/v1/inventory/products?query=${query}&page=${page}&limit=${limit}`)
 }
 
 export const addItem = async (data: Data): Promise<{result: Data}> => {

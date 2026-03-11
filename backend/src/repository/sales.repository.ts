@@ -29,10 +29,11 @@ export class SalesRepository implements ISalesRepository {
         return sale
     }
 
-    async getAllSales(): Promise<Sale[]> {
-        const allSales=await SalesModel.find()
+    async getAllSales(page: number, limit: number): Promise<{ sales: Sale[]; totalPages: number; }> {
+        const allSales=await SalesModel.find().skip((page - 1) * limit).limit(limit)
+        const totalPages = Math.ceil(await SalesModel.countDocuments() / limit);
 
-        return allSales.map(sale => 
+        const sales = allSales.map(sale => 
             new Sale(
                 String(sale._id),
                 sale.date,
@@ -43,6 +44,8 @@ export class SalesRepository implements ISalesRepository {
                 sale.totalAmount
             )
         )
+
+        return {sales, totalPages}  
     }
 
     async deleteSale(id: string): Promise<{ success: boolean; }> {
