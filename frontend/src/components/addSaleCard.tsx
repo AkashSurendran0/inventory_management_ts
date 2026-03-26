@@ -110,7 +110,8 @@ function AddSaleCard({ onsuccess }: Props) {
     }
     if (!formData.isCashSale && !formData.customer)
       errors.customer = "Please select a customer or choose Cash Sale";
-    if (!formData.saleDate) errors.saleDate = "Please select a sale date";
+    if (!formData.saleDate) errors.saleDate = "Please select a sale date";  
+    if (new Date(formData.saleDate) > new Date(Date.now())) errors.saleDate = 'Sale date should not be in the future'
     return errors;
   };
 
