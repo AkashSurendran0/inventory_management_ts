@@ -39,6 +39,11 @@ export default function LoginPage() {
     }
   };
 
+  const fillValue = () => {
+    setEmail('admin@gmail.com')
+    setPassword('admin@123')
+  }
+
 
 
   return (
@@ -133,6 +138,13 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+          <button
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none flex items-center justify-center gap-2"
+              onClick={fillValue}
+          >
+            Use demo account
+          </button>
           
         </div>
 
